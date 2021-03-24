@@ -3,14 +3,19 @@ package com.boaz.adv_Backend.vo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Date;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@DynamicInsert
+@DynamicUpdate
 public class News implements Serializable {
 
     @Id
@@ -24,14 +29,14 @@ public class News implements Serializable {
     @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "date")
     private String date;
 
     @Column(name = "likes", nullable = false)
-    private Long likes;
+    private long likes;
 
     @Column(name = "views", nullable = false)
-    private Long views;
+    private long views;
 
     @Column(name = "writer", nullable = false)
     private Long writer;
@@ -39,9 +44,9 @@ public class News implements Serializable {
     @Column(name = "category", nullable = false)
     private Long category;
 
-    @Column(name = "precedent", nullable = false)
+    @Column(name = "precedent")
     private Long precedent;
 
-    @Column(name = "media", nullable = false)
+    @Column(name = "media")
     private String media;
 }

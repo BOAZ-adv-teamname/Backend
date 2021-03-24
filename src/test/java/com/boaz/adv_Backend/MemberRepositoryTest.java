@@ -20,10 +20,10 @@ public class MemberRepositoryTest {
     @Test
     public void create() {
         Member member = new Member();
-        member.setId("minyoung");
+        member.setId("minyoung2");
         member.setEmail("kminyoung0.kim@gmail.com");
         member.setPwd("1234");
-        member.setNickname("민영");
+        member.setNickname("민영2");
         Member newMember = memberRepository.save(member);
         System.out.println(newMember);
     }
