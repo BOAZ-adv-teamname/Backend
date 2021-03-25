@@ -1,16 +1,18 @@
 package com.boaz.adv_Backend;
 
 import com.boaz.adv_Backend.repository.MemberRepository;
+import com.boaz.adv_Backend.util.HashFunction;
 import com.boaz.adv_Backend.vo.Member;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.transaction.Transactional;
+import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
-
+@Slf4j
 @SpringBootTest
 public class MemberRepositoryTest {
 
@@ -18,47 +20,87 @@ public class MemberRepositoryTest {
     private MemberRepository memberRepository;
 
     @Test
-    public void create() {
-        Member member = new Member();
-        member.setId("minyoung2");
-        member.setEmail("kminyoung0.kim@gmail.com");
-        member.setPwd("1234");
-        member.setNickname("민영2");
-        Member newMember = memberRepository.save(member);
-        System.out.println(newMember);
+    @Transactional
+    public void create() throws NoSuchAlgorithmException {
+        String id = "user";
+        String pwd = "password";
+        String email = "email@email.com";
+        String nick = "nickname";
+
+        Member member = Member.builder()
+                .id(id)
+                .pwd(HashFunction.sha256(pwd))
+                .email(email)
+                .nickname(nick)
+                .build();
+
+        try {
+            Member newMember = memberRepository.save(member);
+            System.out.println("New Member[" + newMember.getMemberId() + " : "+ id + "] has just signed up.");
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
     }
 
     @Test
     public void read() {
-        Optional<Member> member = memberRepository.findById(0L);
-        member.ifPresent(selectMember -> {
-            System.out.println("member: " + selectMember);
-        });
+        long memberId = 1L;
+        String title = "select member(" + memberId + ") : ";
+        Optional<Member> member = memberRepository.findById(memberId);
+        member.ifPresent(selectMember -> log.info(title + selectMember));
     }
 
     @Test
+    @Transactional
     public void update() {
-        Optional<Member> member = memberRepository.findById(9L);
+        Optional<Member> member = memberRepository.findById(1L);
 
         member.ifPresent(selectMember -> {
-            selectMember.setId("minyoung1");
-            selectMember.setNickname("민영1");
+            String id = "update_id";
+            String nick = "update_nick";
+            selectMember.setId(id);
+            selectMember.setNickname(nick);
             Member newMember = memberRepository.save(selectMember);
-            System.out.println("user : " + newMember);
+            System.out.println("update user : " + newMember);
         });
     }
 
     @Test
     @Transactional
     public void delete() {
-        Optional<Member> member = memberRepository.findById(7L);
+        long id = 7L;
 
-        System.out.println(member.isPresent());
-        member.ifPresent(selectMember -> {
-            memberRepository.delete(selectMember);
-        });
+        Optional<Member> member = memberRepository.findById(id);
+        member.ifPresent(memberRepository::delete);
 
-        Optional<Member> deleteMember = memberRepository.findById(7L);
-        System.out.println(deleteMember.isPresent());
+        Optional<Member> deleteMember = memberRepository.findById(id);
+    }
+
+    @Test
+    public void login() throws NoSuchAlgorithmException {
+        String id = "user";
+        String pwd = "password";
+        Optional<Member> loginMember = memberRepository.findByIdAndPwd(id, HashFunction.sha256(pwd));
+
+        if (loginMember.isPresent()) {
+            Member member = loginMember.get();
+            System.out.println("Successfully logged in");
+            member = memberRepository.save(member);
+        } else {
+            System.out.println("Login failed");
+        }
+    }
+
+    @Test
+    public void checkDuplicate() {
+        String id = "minyoung";
+
+        Optional<Member> member = memberRepository.findById(id);
+
+        if (member.isPresent()) {
+            System.out.println("[" + id + "] is duplicate ");
+        } else {
+            System.out.println("[" + id + "] is available");
+        }
     }
 }
