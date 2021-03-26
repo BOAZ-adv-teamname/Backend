@@ -1,0 +1,376 @@
+{
+  "pressList": {
+    "press": [
+      {
+        "oid": "001",
+        "mediaName": "연합뉴스",
+        "rootDomain": "www.yna.co.kr"
+      },
+      {
+        "oid": "002",
+        "mediaName": "프레시안",
+        "rootDomain": "www.pressian.com"
+      },
+      {
+        "oid": "003",
+        "mediaName": "뉴시스",
+        "rootDomain": "www.newsis.com"
+      },
+      {
+        "oid": "215",
+        "mediaName": "한국경제TV",
+        "rootDomain": "www.wowtv.co.kr"
+      },
+      {
+        "oid": "005",
+        "mediaName": "국민일보",
+        "rootDomain": "www.kmib.co.kr"
+      },
+      {
+        "oid": "006",
+        "mediaName": "미디어오늘",
+        "rootDomain": "www.mediatoday.co.kr"
+      },
+      {
+        "oid": "008",
+        "mediaName": "머니투데이",
+        "rootDomain": "www.mt.co.kr"
+      },
+      {
+        "oid": "009",
+        "mediaName": "매일경제",
+        "rootDomain": "www.mk.co.kr"
+      },
+      {
+        "oid": "011",
+        "mediaName": "서울경제",
+        "rootDomain": "www.sedaily.com"
+      },
+      {
+        "oid": "014",
+        "mediaName": "파이낸셜뉴스",
+        "rootDomain": "www.fnnews.com"
+      },
+      {
+        "oid": "015",
+        "mediaName": "한국경제",
+        "rootDomain": "www.hankyung.com"
+      },
+      {
+        "oid": "016",
+        "mediaName": "헤럴드경제",
+        "rootDomain": "biz.heraldcorp.com"
+      },
+      {
+        "oid": "018",
+        "mediaName": "이데일리",
+        "rootDomain": "www.edaily.co.kr"
+      },
+      {
+        "oid": "019",
+        "mediaName": "MBN",
+        "rootDomain": "www.mbn.co.kr"
+      },
+      {
+        "oid": "020",
+        "mediaName": "동아일보",
+        "rootDomain": "www.donga.com"
+      },
+      {
+        "oid": "021",
+        "mediaName": "문화일보",
+        "rootDomain": "www.munhwa.com"
+      },
+      {
+        "oid": "022",
+        "mediaName": "세계일보",
+        "rootDomain": "www.segye.com"
+      },
+      {
+        "oid": "023",
+        "mediaName": "조선일보",
+        "rootDomain": "www.chosun.com"
+      },
+      {
+        "oid": "024",
+        "mediaName": "매경이코노미",
+        "rootDomain": "news.mk.co.kr/v2/economy"
+      },
+      {
+        "oid": "025",
+        "mediaName": "중앙일보",
+        "rootDomain": "joongang.joins.com"
+      },
+      {
+        "oid": "028",
+        "mediaName": "한겨레",
+        "rootDomain": "www.hani.co.kr"
+      },
+      {
+        "oid": "029",
+        "mediaName": "디지털타임즈",
+        "rootDomain": "www.dt.co.kr"
+      },
+      {
+        "oid": "030",
+        "mediaName": "전자신문",
+        "rootDomain": "www.etnews.com"
+      },
+      {
+        "oid": "031",
+        "mediaName": "아이뉴스24",
+        "rootDomain": "www.inews24.com"
+      },
+      {
+        "oid": "032",
+        "mediaName": "경향신문",
+        "rootDomain": "www.khan.co.kr"
+      },
+      {
+        "oid": "033",
+        "mediaName": "주간경향",
+        "rootDomain": "weekly.khan.co.kr"
+      },
+      {
+        "oid": "036",
+        "mediaName": "한겨레21",
+        "rootDomain": "h21.hani.co.kr"
+      },
+      {
+        "oid": "037",
+        "mediaName": "주간동아",
+        "rootDomain": "weekly.donga.com"
+      },
+      {
+        "oid": "047",
+        "mediaName": "오마이뉴스",
+        "rootDomain": "www.ohmynews.com"
+      },
+      {
+        "oid": "050",
+        "mediaName": "한경비즈니스",
+        "rootDomain": "magazine.hankyung.com"
+      },
+      {
+        "oid": "052",
+        "mediaName": "YTN",
+        "rootDomain": "www.ytn.co.kr"
+      },
+      {
+        "oid": "053",
+        "mediaName": "주간조선",
+        "rootDomain": "weekly.chosun.com"
+      },
+      {
+        "oid": "055",
+        "mediaName": "SBS",
+        "rootDomain": "news.sbs.co.kr"
+      },
+      {
+        "oid": "056",
+        "mediaName": "KBS",
+        "rootDomain": "news.kbs.co.kr"
+      },
+      {
+        "oid": "057",
+        "mediaName": "MBN",
+        "rootDomain": "www.mbn.co.kr"
+      },
+      {
+        "oid": "064",
+        "mediaName": "네이버스포츠",
+        "rootDomain": "sports.news.naver.com"
+      },
+      {
+        "oid": "065",
+        "mediaName": "점프볼",
+        "rootDomain": "www.jumpball.co.kr"
+      },
+      {
+        "oid": "076",
+        "mediaName": "스포츠조선",
+        "rootDomain": "sports.chosun.com"
+      },
+      {
+        "oid": "079",
+        "mediaName": "노컷뉴스",
+        "rootDomain": "www.nocutnews.co.kr"
+      },
+      {
+        "oid": "081",
+        "mediaName": "서울신문",
+        "rootDomain": "www.seoul.co.kr"
+      },
+      {
+        "oid": "079",
+        "mediaName": "노컷뉴스",
+        "rootDomain": "www.nocutnews.co.kr"
+      },
+      {
+        "oid": "469",
+        "mediaName": "한국일보",
+        "rootDomain": "www.hankookilbo.com"
+      },
+      {
+        "oid": "421",
+        "mediaName": "뉴스1",
+        "rootDomain": "www.news1.kr"
+      },
+      {
+        "oid": "422",
+        "mediaName": "연합뉴스TV",
+        "rootDomain": "www.yonhapnewstv.co.kr"
+      },
+      {
+        "oid": "449",
+        "mediaName": "채널A",
+        "rootDomain": "www.ichannela.com"
+      },
+      {
+        "oid": "437",
+        "mediaName": "JTBC",
+        "rootDomain": "news.jtbc.joins.com"
+      },
+      {
+        "oid": "437",
+        "mediaName": "JTBC",
+        "rootDomain": "news.jtbc.joins.com"
+      },
+      {
+        "oid": "214",
+        "mediaName": "MBC",
+        "rootDomain": "imnews.imbc.com"
+      },
+      {
+        "oid": "374",
+        "mediaName": "SBS Biz",
+        "rootDomain": "biz.sbs.co.kr"
+      },
+      {
+        "oid": "448",
+        "mediaName": "TV조선",
+        "rootDomain": "www.tvchosun.com"
+      },
+      {
+        "oid": "277",
+        "mediaName": "아시아경제",
+        "rootDomain": "www.asiae.co.kr"
+      },
+      {
+        "oid": "366",
+        "mediaName": "조선비즈",
+        "rootDomain": "biz.chosun.com"
+      },
+      {
+        "oid": "277",
+        "mediaName": "아시아경제",
+        "rootDomain": "www.asiae.co.kr"
+      },
+      {
+        "oid": "123",
+        "mediaName": "조세일보",
+        "rootDomain": "www.joseilbo.com"
+      },
+      {
+        "oid": "629",
+        "mediaName": "더팩트",
+        "rootDomain": "www.tf.co.kr"
+      },
+      {
+        "oid": "119",
+        "mediaName": "데일리안",
+        "rootDomain": "www.dailian.co.kr"
+      },
+      {
+        "oid": "417",
+        "mediaName": "머니S",
+        "rootDomain": "moneys.mt.co.kr"
+      },
+      {
+        "oid": "138",
+        "mediaName": "디지털데일리",
+        "rootDomain": "www.ddaily.co.kr"
+      },
+      {
+        "oid": "092",
+        "mediaName": "ZDNet Korea",
+        "rootDomain": "zdnet.co.kr"
+      },
+      {
+        "oid": "145",
+        "mediaName": "레이디경향",
+        "rootDomain": "lady.khan.co.kr"
+      },
+      {
+        "oid": "308",
+        "mediaName": "시사IN",
+        "rootDomain": "www.sisain.co.kr"
+      },
+      {
+        "oid": "586",
+        "mediaName": "시사저널",
+        "rootDomain": "www.sisajournal.com"
+      },
+      {
+        "oid": "262",
+        "mediaName": "신동아",
+        "rootDomain": "shindonga.donga.com"
+      },
+      {
+        "oid": "243",
+        "mediaName": "이코노미스트",
+        "rootDomain": "jmagazine.joins.com/economist?cloc=joongang-home-jmnet"
+      },
+      {
+        "oid": "353",
+        "mediaName": "중앙SUNDAY",
+        "rootDomain": "news.joins.com/sunday"
+      },
+      {
+        "oid": "127",
+        "mediaName": "기자협회보",
+        "rootDomain": "www.journalist.or.kr"
+      },
+      {
+        "oid": "607",
+        "mediaName": "뉴스타파",
+        "rootDomain": "newstapa.org"
+      },
+      {
+        "oid": "584",
+        "mediaName": "동아사이언스",
+        "rootDomain": "dongascience.donga.com"
+      },
+      {
+        "oid": "310",
+        "mediaName": "여성신문",
+        "rootDomain": "www.womennews.co.kr"
+      },
+      {
+        "oid": "296",
+        "mediaName": "코메디닷컴",
+        "rootDomain": "kormedi.com"
+      },
+      {
+        "oid": "346",
+        "mediaName": "헬스조선",
+        "rootDomain": "health.chosun.com"
+      },
+      {
+        "oid": "087",
+        "mediaName": "강원일보",
+        "rootDomain": "www.kwnews.co.kr"
+      },
+      {
+        "oid": "088",
+        "mediaName": "매일신문",
+        "rootDomain": "news.imaeil.com"
+      },
+      {
+        "oid": "082",
+        "mediaName": "부산일보",
+        "rootDomain": "www.busan.com"
+      }
+    ]
+  }
+}
