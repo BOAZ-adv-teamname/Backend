@@ -30,6 +30,8 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	compile("org.springframework.boot:spring-boot-starter-data-jpa")
 	compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
+	compile group: 'org.jsoup', name: 'jsoup', version: '1.11.3'
+	compile group: 'commons-io', name: 'commons-io', version: '2.6'
 }
 
 test {
