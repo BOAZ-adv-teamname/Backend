@@ -37,9 +37,9 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/*
 @Component
 @Slf4j
-@PropertySource("resources/batch.properties")
 public class NewsCrawlingScheduler {
 
     @Qualifier("webApplicationContext")
@@ -282,3 +282,5 @@ public class NewsCrawlingScheduler {
     }
 
 }
+
+ */

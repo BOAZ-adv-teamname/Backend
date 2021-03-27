@@ -1,10 +1,13 @@
 package com.boaz.adv_Backend;
 
+import com.boaz.adv_Backend.repository.NewsListRepository;
 import com.boaz.adv_Backend.repository.NewsRepository;
 import com.boaz.adv_Backend.vo.News;
+import com.boaz.adv_Backend.vo.NewsList;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +17,9 @@ public class NewsRepositoryTest {
 
     @Autowired
     private NewsRepository newsRepository;
+
+    @Autowired
+    private NewsListRepository newsListRepository;
 
     @Test
     public void create(){
@@ -43,5 +49,14 @@ public class NewsRepositoryTest {
         for(News board : news) {
             System.out.println(board);
         }
+    }
+    @Test
+    public void readPage() {
+        String category = "전체";
+        int page = 0;
+        int size = 3;
+        PageRequest pageRequest = PageRequest.of(page, size);
+        List<NewsList> news = newsListRepository.findAllByCategory(category, pageRequest).getContent();
+        news.forEach(board -> System.out.println(board.toString()));
     }
 }

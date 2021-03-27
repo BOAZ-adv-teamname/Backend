@@ -47,7 +47,7 @@ public class MemberRepositoryTest {
         long memberId = 1L;
         String title = "select member(" + memberId + ") : ";
         Optional<Member> member = memberRepository.findById(memberId);
-        member.ifPresent(selectMember -> log.info(title + selectMember));
+        member.ifPresent(selectMember -> System.out.println(title + selectMember));
     }
 
     @Test

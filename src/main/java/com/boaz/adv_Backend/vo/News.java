@@ -1,6 +1,7 @@
 package com.boaz.adv_Backend.vo;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
@@ -16,6 +17,7 @@ import java.sql.Date;
 @Data
 @DynamicInsert
 @DynamicUpdate
+@Builder
 public class News implements Serializable {
 
     @Id

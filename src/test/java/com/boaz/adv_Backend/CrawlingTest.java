@@ -7,6 +7,7 @@ import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/*
 import javax.persistence.Column;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -58,3 +59,5 @@ public class CrawlingTest {
         }
     }
 }
+
+ */
