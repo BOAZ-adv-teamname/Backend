@@ -24,6 +24,9 @@ public class NewsList implements Serializable {
     @Column(name = "title")
     private String title;
 
+    @Column(name="content")
+    private String content;
+
     @Column(name = "writer_id")
     private String writerId;
 

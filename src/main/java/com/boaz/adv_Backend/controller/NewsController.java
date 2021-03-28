@@ -121,6 +121,7 @@ public class NewsController {
         res.put("boardId", article.getBoardId());
         res.put("category", article.getCategory());
         res.put("title", article.getTitle());
+        res.put("content", article.getContent());
         res.put("writerId", article.getWriterId());
         res.put("writerNickname", article.getWriterNickname());
         res.put("date", article.getDate());

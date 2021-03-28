@@ -34,13 +34,13 @@ public class News implements Serializable {
     @Column(name = "date")
     private String date;
 
-    @Column(name = "likes", nullable = false)
+    @Column(name = "likes")
     private long likes;
 
-    @Column(name = "views", nullable = false)
+    @Column(name = "views")
     private long views;
 
-    @Column(name = "writer", nullable = false)
+    @Column(name = "writer")
     private Long writer;
 
     @Column(name = "category", nullable = false)
