@@ -60,14 +60,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public NewsList getPostById(long newsId) {
-        Optional<NewsList> opNews = NewsListRepository.findById(newsId);
-        if (!opNews.isPresent()) {
-            return null;
-        }
-        NewsList news = opNews.get();
-        Conversion.convertContent((Article) news);
-        Conversion.convertDateFormatForArticle((Article) news);
-        return news;
+        return NewsListRepository.findById(newsId).orElse(null);
     }
 
     @Override

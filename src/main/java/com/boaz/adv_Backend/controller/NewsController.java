@@ -8,6 +8,7 @@ import com.boaz.adv_Backend.service.ReplyService;
 import com.boaz.adv_Backend.util.Conversion;
 import com.boaz.adv_Backend.util.CurrentArticle;
 import com.boaz.adv_Backend.vo.Category;
+import com.boaz.adv_Backend.vo.Member;
 import com.boaz.adv_Backend.vo.NewsList;
 import com.boaz.adv_Backend.vo.ReplyList;
 import org.json.simple.JSONArray;
@@ -77,6 +78,7 @@ public class NewsController {
             data.put("date", newss.get(i).getDate());
             data.put("likes", newss.get(i).getLikes());
             data.put("replies", newss.get(i).getReplies());
+            data.put("summary", newss.get(i).getSummary());
             newsArray.add(i, data);
         }
 
@@ -90,15 +92,18 @@ public class NewsController {
         response.setContentType("application/json; charset=utf-8");
         response.getWriter().print(res);
 
-
         return;
     }
 
     @GetMapping("/news/{idx}")
-    public void viewPost(@PathVariable("idx") int newsId) {
+    public void viewPost(@PathVariable("idx") int newsId,
+                         HttpServletRequest request,
+                         HttpServletResponse response) throws IOException{
+
         if (!newsService.addViews(newsId)) {
             return;
         }
+        JSONObject res = new JSONObject();
 
         NewsList article = newsService.getPostById(newsId);
         if (Objects.isNull(article)) {
@@ -107,10 +112,41 @@ public class NewsController {
         CurrentArticle currentArticle = newsService.getPrevAndNextArticle(newsId);
         List<ReplyList> replies = replyService.getRepliesByNewsId(newsId);
 
-        // todo
+        Member member = (Member) request.getSession().getAttribute("loginMember");
+
+        boolean isLike = false;
+
+        res.put("prev", currentArticle.getPrev());
+        res.put("next", currentArticle.getNext());
+        res.put("boardId", article.getBoardId());
+        res.put("category", article.getCategory());
+        res.put("title", article.getTitle());
+        res.put("writerId", article.getWriterId());
+        res.put("writerNickname", article.getWriterNickname());
+        res.put("date", article.getDate());
+        res.put("likes", article.getLikes());
+        res.put("replies", article.getReplies());
+        res.put("summary", article.getSummary());
+
+        JSONArray replyArray = new JSONArray();
+
+        for (int i = 0; i < replies.size(); i++) {
+            JSONObject data = new JSONObject();
+            data.put("boardId", replies.get(i).getNewsId());
+            data.put("replyId", replies.get(i).getReplyId());
+            data.put("content", replies.get(i).getContent());
+            data.put("date", replies.get(i).getDate());
+            data.put("memberId", replies.get(i).getMemberId());
+            data.put("nickname", replies.get(i).getNickname());
+
+            replyArray.add(i, data);
+        }
+
+        res.put("reply", replyArray);
+
+        response.setContentType("application/json; charset=utf-8");
+        response.getWriter().print(res);
 
         return;
     }
-
-
 }
