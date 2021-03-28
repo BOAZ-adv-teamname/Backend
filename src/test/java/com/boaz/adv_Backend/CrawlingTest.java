@@ -6,14 +6,16 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
-/*
+
 import javax.persistence.Column;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@SpringBootTest
 public class CrawlingTest {
 
     @Autowired
@@ -35,29 +37,34 @@ public class CrawlingTest {
 
             System.out.println("title : " + title);
             //System.out.println("summary : " + summary);
-            System.out.println("content : "+content);
-            System.out.println("pubDate : "+pubDate);
-            System.out.println("mediaName : "+mediaName);
-            System.out.println("rootDomain : "+rootDomain);
+            System.out.println("content : " +content);
+            System.out.println("pubDate : " +pubDate);
+            System.out.println("mediaName : " +mediaName);
+            System.out.println("rootDomain : " +rootDomain);
+
 
             News news = new News();
+            news.setNewsId(5L);
+            news.setCategory(1L);
             news.setTitle(title);
             news.setContent(content);
+            news.setLikes(1L);
+            news.setViews(1L);
+            news.setWriter(1L);
+            news.setCategory(1L);
+            news.setPrecedent(1L);
             news.setMedia(mediaName);
-            news.setDate(pubDate);
-            //news.setLikes(0L);
-            //news.setWriter(0L);
-            //news.setCategory(0L);
+            //news.setSummary(summary);
 
-            //News newsBoard = newsRepository.save(news);
-            //System.out.println(newsBoard);
+            News newsBoard = newsRepository.save(news);
+            System.out.println(newsBoard);
 
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 }
 
- */
+
