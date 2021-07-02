@@ -46,11 +46,11 @@ def make_simtext(law_path,new_path):
 
 
 app = Flask(__name__)
-cors = CORS(app)
+cors = CORS(app, resources={r"/pin": {"origins": "*"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route('/')
-@cross_origin()
+@cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def index():
   return "ok"
 
