@@ -199,7 +199,8 @@ public class NewsCrawlingScheduler {
         }
 
         //url 중복검사 필요
-        if (newsRepository.findById(5L).isPresent()) return;
+        if (newsRepository.findById(5L).isPresent())
+            return;
 
         News news = new News();
 
@@ -209,9 +210,9 @@ public class NewsCrawlingScheduler {
         news.setLikes(1L);
         news.setViews(1L);
         news.setWriter(1L);
-        news.setCategory(1L);
         news.setPrecedent(1L);
         news.setMedia(mediaName);
+        news.setSummary(summary);
 
         newsRepository.save(news);
 

@@ -16,7 +16,7 @@ public class NewsList implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "news_id")
-    private Long boardId;
+    private Long newsId;
 
     @Column(name = "category")
     private String category;

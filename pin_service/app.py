@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, jsonify
+from flask_cors import CORS, cross_origin
 from flask_restful import reqparse
 
 import json
@@ -45,12 +46,16 @@ def make_simtext(law_path,new_path):
 
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route('/')
+@cross_origin()
 def index():
   return "ok"
 
-@app.route('/pin', methods = ['POST'])
+@app.route('/pin', methods = ['POST','OPTIONS'])
+@cross_origin()
 def pin():
   parser = reqparse.RequestParser()
   parser.add_argument('news', type=str)
@@ -74,12 +79,13 @@ def pin():
   print(similar_precedent3)
 
   data = {
-    "news" : news, 
-    "similar_precedent1":similar_precedent1, 
-    "similar_precedent2":similar_precedent2, 
+    "news" : news,
+    "similar_precedent1":similar_precedent1,
+    "similar_precedent2":similar_precedent2,
     "similar_precedent3":similar_precedent3
   }
-  return data
+
+  return jsonify(data)
 
 if __name__=="__main__":
     app.run(host = 'localhost', port=5000, debug=True)

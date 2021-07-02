@@ -15,10 +15,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,7 +27,7 @@ import java.util.Objects;
 public class NewsController {
     private final String DEFAULT_CATEGORY = "전체";
     private final String DEFAULT_PAGE = "1";
-    private final String DEFAULT_LIST_SIZE = "10";
+    private final String DEFAULT_LIST_SIZE = "5";
     private final int NOT_EXIST = 0;
 
     @Autowired
@@ -45,6 +42,7 @@ public class NewsController {
     private ReplyService replyService;
 
     @GetMapping("/news")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public void showNews(
             @RequestParam(defaultValue = DEFAULT_CATEGORY, required = false) String category,
             @RequestParam(defaultValue = DEFAULT_PAGE, required = false) Integer page,
@@ -72,13 +70,12 @@ public class NewsController {
         JSONArray newsArray = new JSONArray();
         for (int i = 0; i < newss.size(); i++) {
             JSONObject data = new JSONObject();
-            data.put("newsId", newss.get(i).getBoardId());
+            data.put("newsId", newss.get(i).getNewsId());
             data.put("category", newss.get(i).getCategory());
             data.put("title", newss.get(i).getTitle());
             data.put("date", newss.get(i).getDate());
-            data.put("likes", newss.get(i).getLikes());
-            data.put("replies", newss.get(i).getReplies());
             data.put("summary", newss.get(i).getSummary());
+            data.put("content", newss.get(i).getContent());
             newsArray.add(i, data);
         }
 
@@ -96,6 +93,7 @@ public class NewsController {
     }
 
     @GetMapping("/news/{idx}")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public void viewPost(@PathVariable("idx") int newsId,
                          HttpServletRequest request,
                          HttpServletResponse response) throws IOException{
@@ -118,15 +116,11 @@ public class NewsController {
 
         res.put("prev", currentArticle.getPrev());
         res.put("next", currentArticle.getNext());
-        res.put("boardId", article.getBoardId());
+        res.put("newsId", article.getNewsId());
         res.put("category", article.getCategory());
         res.put("title", article.getTitle());
         res.put("content", article.getContent());
-        res.put("writerId", article.getWriterId());
-        res.put("writerNickname", article.getWriterNickname());
         res.put("date", article.getDate());
-        res.put("likes", article.getLikes());
-        res.put("replies", article.getReplies());
         res.put("summary", article.getSummary());
 
         JSONArray replyArray = new JSONArray();
@@ -137,8 +131,6 @@ public class NewsController {
             data.put("replyId", replies.get(i).getReplyId());
             data.put("content", replies.get(i).getContent());
             data.put("date", replies.get(i).getDate());
-            data.put("memberId", replies.get(i).getMemberId());
-            data.put("nickname", replies.get(i).getNickname());
 
             replyArray.add(i, data);
         }
