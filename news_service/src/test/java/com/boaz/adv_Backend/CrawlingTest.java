@@ -52,7 +52,6 @@ public class CrawlingTest {
             news.setViews(1L);
             news.setWriter(1L);
             news.setCategory(1L);
-            news.setPrecedent(1L);
             news.setMedia(mediaName);
             //news.setSummary(summary);
 
