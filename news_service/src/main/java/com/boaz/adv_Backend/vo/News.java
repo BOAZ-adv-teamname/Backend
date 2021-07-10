@@ -46,9 +46,6 @@ public class News implements Serializable {
     @Column(name = "category", nullable = false)
     private Long category;
 
-    @Column(name = "precedent")
-    private Long precedent;
-
     @Column(name = "media")
     private String media;
 

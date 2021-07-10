@@ -210,7 +210,6 @@ public class NewsCrawlingScheduler {
         news.setLikes(1L);
         news.setViews(1L);
         news.setWriter(1L);
-        news.setPrecedent(1L);
         news.setMedia(mediaName);
         news.setSummary(summary);
 
