@@ -76,6 +76,7 @@ public class NewsController {
             data.put("date", newss.get(i).getDate());
             data.put("summary", newss.get(i).getSummary());
             data.put("content", newss.get(i).getContent());
+            data.put("media", newss.get(i).getMedia());
             newsArray.add(i, data);
         }
 
@@ -122,6 +123,7 @@ public class NewsController {
         res.put("content", article.getContent());
         res.put("date", article.getDate());
         res.put("summary", article.getSummary());
+        res.put("media", article.getMedia());
 
         JSONArray replyArray = new JSONArray();
 
