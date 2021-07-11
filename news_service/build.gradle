@@ -33,6 +33,7 @@ dependencies {
 	compile group: 'org.jsoup', name: 'jsoup', version: '1.11.3'
 	compile group: 'commons-io', name: 'commons-io', version: '2.6'
 	compile('org.springframework.boot:spring-boot-starter-cache')
+	compile('org.springframework.boot:spring-boot-starter-tomcat')
 }
 
 test {
