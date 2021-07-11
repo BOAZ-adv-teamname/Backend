@@ -8,6 +8,7 @@ import com.boaz.news_service.vo.Category;
 import com.boaz.news_service.vo.News;
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -27,15 +28,15 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,16 +54,13 @@ public class NewsCrawlingScheduler {
     NewsRepository newsRepository;
 
     @Autowired
-    CategoryRepository categoryRepository;
+    CacheManager cacheManager;
 
     static boolean flag = false;
 
-    @Scheduled(fixedDelay = 20000000)
-    @Async
-    public void crawling_naver_main_news() throws IOException, ParseException {
-        if (flag) {
-            log.info("finished!!!!!!!");
-        }
+    @Scheduled(fixedDelay = 3000)
+    @Async("asyncThreadTaskExecutor")
+    public void crawling_naver_main_news() throws IOException, ParseException, java.text.ParseException {
         String news_list_url_format = "https://news.naver.com/main/list.nhn?" +
                 "mode=LS2D" +
                 "&mid=shm" +
@@ -71,93 +69,111 @@ public class NewsCrawlingScheduler {
                 "&date=%s"+
                 "&page=%d";
         Resource resource = resourceLoader.getResource("classpath:/static/newsClassification.json");
-        log.info(String.valueOf(resource.exists()));
+        //log.info(String.valueOf(resource.exists()));
 
         Map<String, Map<String, String>> typeMap = getClassfication();
-        long before = System.currentTimeMillis();
+        System.out.println(typeMap);
         for (String sid2 : typeMap.keySet()) {
             String sid1 = typeMap.get(sid2).get("sid1");
             String class1 = typeMap.get(sid2).get("class1");
             String class2 = typeMap.get(sid2).get("class2");
-            Calendar calendar = Calendar.getInstance();
-            String date = new SimpleDateFormat("YYYYMMdd").format(calendar.getTime());
-            int page = 1;
-            int repeatCnt = 0;
-            while (true) {
-                boolean hasNextDate = false;
+
+            System.out.println(sid1);
+            System.out.println(sid2);
+            System.out.println(class1);
+            System.out.println(class2);
+
+            if(sid1=="102"){ // 사회면만 크롤링
+                Calendar calendar = Calendar.getInstance();
+                String date = new SimpleDateFormat("yyyyMMdd").format(calendar.getTime());
+                int page = 1;
                 while (true) {
-                    String news_list_url = String.format(news_list_url_format,
-                            sid1, sid2, date, page);
-                    log.info(news_list_url);
-                    Document document = Jsoup.connect(news_list_url).get();
-                    String[] arr = new String[]{".type06_headline", ".type06"};
-                    for (String str : arr) {
-                        Elements newsList = document.select(str);
-                        if (!ObjectUtils.isEmpty(newsList)) {
-                            newsList = newsList.select("li");
-                        }
-                        for (Element elem : newsList) {
-                            Elements aElems = elem.select("a");
-                            if (!ObjectUtils.isEmpty(aElems)) {
-                                String href = aElems.get(0).attr("href");
-                                log.info(href);
-                                repeatCnt++;
-                                log.info(String.valueOf(repeatCnt));
-                                getNewsInfo(href, sid1, sid2, class1, class2);
-                            }
-                        }
-                    }
-                    Elements pageElems = document.getElementsByClass("nclicks(fls.page)");
-                    boolean hasNextPage = false;
-                    if (!ObjectUtils.isEmpty(pageElems)) {
-                        String lastPageStr = pageElems.last().text();
-                        if (!"다음".equals(lastPageStr) && !"이전".equals(lastPageStr)) {
-                            int lastPage = Integer.parseInt(pageElems.last().text());
-                            if (lastPage > page) {
-                                hasNextPage = true;
-                            }
-                        } else if("다음".equals(lastPageStr)) {
-                            hasNextPage = true;
-                        }
-                    }
-                    if (!hasNextPage) {
-                        page = 1;
-                        Elements dateElems = document.getElementsByClass("nclicks(fls.date)");
-                        if (!ObjectUtils.isEmpty(dateElems)) {
-                            Element dateElem = dateElems.last();
-                            String preDate = dateElem.attr("href");
-                            Pattern pattern = Pattern.compile("[0-9]{8}");
-                            Matcher matcher = pattern.matcher(preDate);
-                            if (matcher.find()) {
-                                int curDate = Integer.parseInt(date);
-                                int date1 = Integer.parseInt(matcher.group());
-                                if (date1 < curDate) {
-                                    hasNextDate = true;
-                                    date = String.valueOf(curDate-1);
+                    boolean hasNextDate = false;
+                    while (true) {
+                        String news_list_url = String.format(news_list_url_format, sid1, sid2, date, page);
+                        //log.info(news_list_url);
+                        Cache cache = cacheManager.getCache("newsListCache");
+                        Document document = null;
+                        if (ObjectUtils.isEmpty(cache.get(news_list_url))) {
+                            document = Jsoup.connect(news_list_url).get();
+                            String[] arr = new String[]{".type06_headline", ".type06"};
+                            for (String str : arr) {
+                                Elements newsList = document.select(str);
+                                if (!ObjectUtils.isEmpty(newsList)) {
+                                    newsList = newsList.select("li");
+                                }
+                                for (Element elem : newsList) {
+                                    Elements aElems = elem.select("a");
+                                    if (!ObjectUtils.isEmpty(aElems)) {
+                                        String href = aElems.get(0).attr("href");
+                                        //log.info(href);
+                                        System.out.println(sid2);
+                                        getNewsInfo(href, sid1, sid2, class1, class2);
+                                    }
                                 }
                             }
+                        } else {
+                            document = (Document) cache.get(news_list_url).get();
+                            //log.info("news list doc from cache : {}",document.toString());
                         }
+                        Elements pageElems = document.getElementsByClass("nclicks(fls.page)");
+                        boolean hasNextPage = false;
+                        if (!ObjectUtils.isEmpty(pageElems)) {
+                            String lastPageStr = pageElems.last().text();
+                            if (!"다음".equals(lastPageStr) && !"이전".equals(lastPageStr)) {
+                                int lastPage = Integer.parseInt(pageElems.last().text());
+                                if (lastPage > page) {
+                                    hasNextPage = true;
+                                }
+                            } else if("다음".equals(lastPageStr)) {
+                                hasNextPage = true;
+                            }
+                        }
+                        if (!hasNextPage) {
+                            page = 1;
+                            Elements dateElems = document.getElementsByClass("nclicks(fls.date)");
+                            if (!ObjectUtils.isEmpty(dateElems)) {
+                                Element dateElem = dateElems.last();
+                                String preDate = dateElem.attr("href");
+                                Pattern pattern = Pattern.compile("[0-9]{8}");
+                                Matcher matcher = pattern.matcher(preDate);
+                                if (matcher.find()) {
+                                    int curDate = Integer.parseInt(date);
+                                    int date1 = Integer.parseInt(matcher.group());
+                                    if (date1 < curDate && curDate>20210711) {
+                                        hasNextDate = true;
+                                        Calendar cal = Calendar.getInstance();
+                                        cal.setTime(new SimpleDateFormat("yyyyMMdd").parse(date));
+                                        cal.add(Calendar.DAY_OF_MONTH,-1);
+                                        date = new SimpleDateFormat("yyyyMMdd").format(cal.getTime());
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                        page++;
+                    }
+                    if (flag) {
+                        String todayStr = new SimpleDateFormat("yyyyMMdd").format(calendar.getTime());
+                        int today = Integer.parseInt(todayStr);
+                        int d = Integer.parseInt(date);
+                        if (today - d >= 2) break;
+                    }
+                    if (!hasNextDate) {
+                        date = new SimpleDateFormat("yyyyMMdd").format(calendar.getTime());
                         break;
                     }
-                    page++;
-                    if (repeatCnt > 1) break;
                 }
-                if (!hasNextDate) {
-                    date = new SimpleDateFormat("YYYYMMdd").format(calendar.getTime());
-                    break;
-                }
-                if (repeatCnt > 1) break;
             }
-            if (repeatCnt > 1) break;
-        }
-        long after = System.currentTimeMillis();
-        flag = true;
-        log.info(String.valueOf(after - before));
 
-        return;
+        }
+        flag = true;
     }
 
     private void getNewsInfo(String url,String sid1,String sid2, String class1, String class2) throws IOException, ParseException {
+
+        if (hasNewsDoc(url)) return;
+        //if (newsRepository.existsByUri(url)) return;
         Pattern pattern1 = Pattern.compile("oid=[0-9]{3}");
         Matcher matcher = pattern1.matcher(url);
         String oid = "";
@@ -199,13 +215,7 @@ public class NewsCrawlingScheduler {
             pubDate = dateElems.get(0).text();
         }
 
-        //url 중복검사 필요
-        if (newsRepository.findById(5L).isPresent())
-            return;
-
         News news = new News();
-
-        System.out.println(class2);
 
         // get category id by name
         Long categoryId=0L;
@@ -244,15 +254,18 @@ public class NewsCrawlingScheduler {
     }
 
     private Map<String, Map<String,String>> getPressList() {
-        Resource resource = resourceLoader.getResource("classpath:/static/pressList.json");
+        byte[] data;
+        //Resource resource = resourceLoader.getResource("classpath:/static/pressList.json");
         Map<String, Map<String,String>> map = new HashMap<>();
-        try {
-            StringBuilder sb = new StringBuilder();
-            Path path = Paths.get(resource.getURI());
-            List<String> content = Files.readAllLines(path);
-            content.forEach(str -> sb.append(str));
+        try(InputStream in = getClass().getResourceAsStream("/static/pressList.json")) {
+//            StringBuilder sb = new StringBuilder();
+//            Path path = Paths.get(resource.getURI());
+//            List<String> content = Files.readAllLines(path);
+//            content.forEach(str -> sb.append(str));
 
-            String jsonStr = sb.toString();
+            data = IOUtils.toByteArray(in);
+
+            String jsonStr = new String(data);
 
             JSONParser parser = new JSONParser();
             JSONObject jsonObject = (JSONObject) parser.parse(jsonStr);
@@ -275,15 +288,16 @@ public class NewsCrawlingScheduler {
     }
 
     private Map<String, Map<String, String>> getClassfication() {
-        Resource resource = resourceLoader.getResource("classpath:/static/newsClassification.json");
+        byte[] data;
         Map<String,Map<String, String>> map = new HashMap<>();
-        try {
-            StringBuilder sb = new StringBuilder();
-            Path path = Paths.get(resource.getURI());
-            List<String> content = Files.readAllLines(path);
-            content.forEach(str -> sb.append(str));
+        try(InputStream in = getClass().getResourceAsStream("/static/newsClassification.json")) {
+//            StringBuilder sb = new StringBuilder();
+//            Path path = Paths.get(resource.getURI());
+//            List<String> content = Files.readAllLines(path);
+//            content.forEach(str -> sb.append(str));
+            data = IOUtils.toByteArray(in);
 
-            String jsonStr = sb.toString();
+            String jsonStr = new String(data);
 
             JSONParser parser = new JSONParser();
             JSONObject jsonObject = (JSONObject) parser.parse(jsonStr);
@@ -304,6 +318,14 @@ public class NewsCrawlingScheduler {
             e.printStackTrace();
         }
         return map;
+    }
+
+    private boolean hasNewsDoc(String url) {
+        Cache cache = cacheManager.getCache("newsCache");
+        if (ObjectUtils.isEmpty(cache.get(url))) {
+            cache.put(url,url+"_value");
+            return false;
+        } else return true;
     }
 }
 
