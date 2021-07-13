@@ -69,21 +69,15 @@ public class NewsCrawlingScheduler {
                 "&date=%s"+
                 "&page=%d";
         Resource resource = resourceLoader.getResource("classpath:/static/newsClassification.json");
-        //log.info(String.valueOf(resource.exists()));
 
         Map<String, Map<String, String>> typeMap = getClassfication();
-        System.out.println(typeMap);
         for (String sid2 : typeMap.keySet()) {
             String sid1 = typeMap.get(sid2).get("sid1");
             String class1 = typeMap.get(sid2).get("class1");
             String class2 = typeMap.get(sid2).get("class2");
 
-            System.out.println(sid1);
-            System.out.println(sid2);
-            System.out.println(class1);
-            System.out.println(class2);
-
-            if(sid1=="102"){ // 사회면만 크롤링
+            int cnt = 0;
+            if(sid1.equals("102")){ // 사회면만 크롤링
                 Calendar calendar = Calendar.getInstance();
                 String date = new SimpleDateFormat("yyyyMMdd").format(calendar.getTime());
                 int page = 1;
@@ -91,7 +85,6 @@ public class NewsCrawlingScheduler {
                     boolean hasNextDate = false;
                     while (true) {
                         String news_list_url = String.format(news_list_url_format, sid1, sid2, date, page);
-                        //log.info(news_list_url);
                         Cache cache = cacheManager.getCache("newsListCache");
                         Document document = null;
                         if (ObjectUtils.isEmpty(cache.get(news_list_url))) {
@@ -106,9 +99,10 @@ public class NewsCrawlingScheduler {
                                     Elements aElems = elem.select("a");
                                     if (!ObjectUtils.isEmpty(aElems)) {
                                         String href = aElems.get(0).attr("href");
-                                        //log.info(href);
-                                        System.out.println(sid2);
-                                        getNewsInfo(href, sid1, sid2, class1, class2);
+                                        cnt++;
+                                        if(cnt<20){
+                                            getNewsInfo(href, sid1, sid2, class1, class2);
+                                        }
                                     }
                                 }
                             }
@@ -238,6 +232,7 @@ public class NewsCrawlingScheduler {
             }
         }
 
+        // save news
         news.setCategory(categoryId);
         news.setTitle(title);
         news.setContent(content);
@@ -255,14 +250,8 @@ public class NewsCrawlingScheduler {
 
     private Map<String, Map<String,String>> getPressList() {
         byte[] data;
-        //Resource resource = resourceLoader.getResource("classpath:/static/pressList.json");
         Map<String, Map<String,String>> map = new HashMap<>();
         try(InputStream in = getClass().getResourceAsStream("/static/pressList.json")) {
-//            StringBuilder sb = new StringBuilder();
-//            Path path = Paths.get(resource.getURI());
-//            List<String> content = Files.readAllLines(path);
-//            content.forEach(str -> sb.append(str));
-
             data = IOUtils.toByteArray(in);
 
             String jsonStr = new String(data);
@@ -291,10 +280,6 @@ public class NewsCrawlingScheduler {
         byte[] data;
         Map<String,Map<String, String>> map = new HashMap<>();
         try(InputStream in = getClass().getResourceAsStream("/static/newsClassification.json")) {
-//            StringBuilder sb = new StringBuilder();
-//            Path path = Paths.get(resource.getURI());
-//            List<String> content = Files.readAllLines(path);
-//            content.forEach(str -> sb.append(str));
             data = IOUtils.toByteArray(in);
 
             String jsonStr = new String(data);
