@@ -64,7 +64,6 @@ public class NewsController {
         int totalPage = newsListPage.getTotalPages();
         int startPage = Conversion.calcStartPage(page);
 
-        Conversion.convertDateFormatForBoard(newss);
         Conversion.convertTitleLength(newss);
 
         JSONArray newsArray = new JSONArray();
