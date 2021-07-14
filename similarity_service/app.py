@@ -8,8 +8,24 @@ import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+import pymongo
+from pymongo import MongoClient
+
+local=True
+
 def read_sum_data(path):
-    sum_database = pd.read_csv(f'./{path}/summary_gpu.csv')
+    if local:
+        sum_database = pd.read_csv(f'./{path}/summary_gpu.csv')
+    else:
+        try:
+            client = MongoClient("localhost:27017")
+            db = client.precedent
+            collection = db.precedent
+            sum_database = collection.find({})
+        except:
+            print('mongo db connect error')
+            sum_database = pd.read_csv(f'./{path}/summary_gpu.csv')
+
     return sum_database.loc[:,'kobart_sum']
 
 def vectorization(DATABASE,NEWS):
