@@ -6,6 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface NewsListRepository extends JpaRepository<NewsList, Long> {
-    //public NewsList findByUri(String url);
+    public NewsList findByUri(String url);
     Page<NewsList> findAllByCategory(String category, Pageable pageRequest);
 }

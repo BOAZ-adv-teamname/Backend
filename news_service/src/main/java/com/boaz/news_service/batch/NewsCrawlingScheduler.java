@@ -167,7 +167,7 @@ public class NewsCrawlingScheduler {
     private void getNewsInfo(String url,String sid1,String sid2, String class1, String class2) throws IOException, ParseException {
 
         if (hasNewsDoc(url)) return;
-        //if (newsRepository.existsByUri(url)) return;
+        if (newsRepository.existsByUri(url)) return;
         Pattern pattern1 = Pattern.compile("oid=[0-9]{3}");
         Matcher matcher = pattern1.matcher(url);
         String oid = "";
@@ -225,6 +225,8 @@ public class NewsCrawlingScheduler {
         map.put(6L, "인권/복지");
         map.put(7L, "인물");
         map.put(8L, "사회일반");
+        map.put(9L, "식품/의료");
+        map.put(10L, "지역");
 
         for (Long key : map.keySet()) {
             if (class2.equals(map.get(key))) {
@@ -241,6 +243,7 @@ public class NewsCrawlingScheduler {
         news.setWriter(1L);
         news.setMedia(mediaName);
         news.setSummary(summary);
+        news.setUri(url);
 
         newsRepository.save(news);
 

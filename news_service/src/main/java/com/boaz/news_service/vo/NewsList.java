@@ -50,4 +50,7 @@ public class NewsList implements Serializable {
 
     @Column(name="media")
     private String media;
+
+    @Column(name="uri")
+    private String uri;
 }
