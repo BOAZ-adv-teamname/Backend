@@ -1,7 +1,0 @@
-similarity_service/Include
-similarity_service/Lib
-similarity_service/Scripts
-similarity_service/tcl
-*.pyc
-*.txt
-*.pt

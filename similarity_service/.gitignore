@@ -1,0 +1,9 @@
+Include
+Lib
+Scripts
+tcl
+model/Sum_Database/*.txt
+service/Output/*.txt
+*.pyc
+*.pt
+*.csv
