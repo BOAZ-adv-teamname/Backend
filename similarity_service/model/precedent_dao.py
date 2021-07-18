@@ -10,7 +10,7 @@ import os
 def get_precedent_data(local):
     # local csv 파일
     if local:
-        sum_database = pd.read_csv('./model/Sum_Database/summary_gpu.csv')
+        sum_database = pd.read_csv('./model/Sum_Database/0706_KoBart512.csv')
     # mongo db
     else:
         try:
@@ -20,6 +20,7 @@ def get_precedent_data(local):
             sum_database = collection.find({})
         except:
             print('mongo db connect error')
-            sum_database = pd.read_csv('Sum_Database/summary_gpu.csv')
+            sum_database = pd.read_csv(path)
 
-    return sum_database.loc[:,'kobart_sum']
+    sum_database=sum_database[sum_database.kobart_sum.notna()]
+    return sum_database.kobart_sum.values.tolist()
