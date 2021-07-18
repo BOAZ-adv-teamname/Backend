@@ -22,3 +22,8 @@ threadpoolctl==2.2.0
 typing-extensions==3.10.0.0
 Werkzeug==2.0.1
 zipp==3.5.0
+nltk
+tqdm
+sentence_transformers
+torch >= 1.4.0
+transformers == 2.8.0
