@@ -58,7 +58,7 @@ public class NewsCrawlingScheduler {
 
     static boolean flag = false;
 
-    @Scheduled(fixedDelay = 3000)
+    @Scheduled(fixedDelay = 3000000)
     @Async("asyncThreadTaskExecutor")
     public void crawling_naver_main_news() throws IOException, ParseException, java.text.ParseException {
         String news_list_url_format = "https://news.naver.com/main/list.nhn?" +
@@ -100,9 +100,8 @@ public class NewsCrawlingScheduler {
                                     if (!ObjectUtils.isEmpty(aElems)) {
                                         String href = aElems.get(0).attr("href");
                                         cnt++;
-                                        if(cnt<20){
+                                        if(cnt<50)
                                             getNewsInfo(href, sid1, sid2, class1, class2);
-                                        }
                                     }
                                 }
                             }
@@ -208,6 +207,11 @@ public class NewsCrawlingScheduler {
         if (!ObjectUtils.isEmpty(dateElems)) {
             pubDate = dateElems.get(0).text();
         }
+
+        if(summary.equals(""))
+            return;
+        if(content.equals(""))
+            return;
 
         News news = new News();
 
